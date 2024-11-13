@@ -28,7 +28,7 @@ Base = declarative_base()
 
 
 class CustomBaseModel:
-    id = Column(String, name="id", primary_key=True, default=generate_uuid)
+    id = Column(VARCHAR(32), name="id", primary_key=True, default=generate_uuid)
     updated_by = Column(VARCHAR(32))
     created_by = Column(VARCHAR(32))
     created_at = Column(DateTime, default=get_current_time)

@@ -3,10 +3,10 @@ import logging
 from sqlalchemy.orm import Session
 
 from app.api.base.repository import ReposReturn
-from app.third_parties.db.models.customer.model import (Customer)
+from app.third_parties.db.models.model import User
 
 
-async def create_user(session: Session, user: Customer) -> ReposReturn:
+async def create_user(session: Session, user: User) -> ReposReturn:
     try:
         session.add(user)
         session.commit()
@@ -20,9 +20,9 @@ async def create_user(session: Session, user: Customer) -> ReposReturn:
 async def get_user_by_username(session: Session, username: str) -> ReposReturn:
     try:
         user = session.query(
-            Customer
+            User
         ).filter(
-            Customer.username == username
+            User.username == username
         ).first()
 
     except Exception as ex:
@@ -35,11 +35,13 @@ async def get_user_by_username(session: Session, username: str) -> ReposReturn:
 async def get_users(session: Session) -> ReposReturn:
     try:
         users = session.query(
-            Customer.id,
-            Customer.username,
-            Customer.full_name,
-            Customer.email,
-
+            User.id,
+            User.username,
+            User.first_name,
+            User.last_name,
+            User.email,
+            User.gender,
+            User.is_admin
         ).all()
 
     except Exception as ex:

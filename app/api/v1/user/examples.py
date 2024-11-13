@@ -1,9 +1,11 @@
 DATA_EXAMPLE_CREATE_USER = {
-    'fullname': 'Duong Do Nguyen',
+    'first_name': 'Duong',
+    'last_name': 'Do Nguyen',
     'email': 'ddonguyen123@.com.vn',
     'phone': '0345449875',
-    'gender': 'Male',
+    'gender': True,
     'username': 'ddonguyen',
+    'password': '123456'
 }
 
 DATA_EXAMPLE_CHANGE_PASSWORD_USER = {

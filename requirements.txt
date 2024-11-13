@@ -20,10 +20,5 @@ pytz==2024.1 #https://pypi.org/project/pytz/
 
 alembic==1.13.2 #https://alembic.sqlalchemy.org/en/latest/
 
-websockets==12.0 #https://pypi.org/project/websockets/
-
-
-
-
-
-
+PyJWT==2.9.0
+passlib==1.7.4
