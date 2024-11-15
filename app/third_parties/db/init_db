@@ -1,0 +1,18 @@
+-- Insert data table roles
+INSERT INTO roles (id,name)
+VALUES
+    ('DAA6B933DAF84FBB99477508A4DAC571','Admin'),
+    ('DAA6B933DAF84FBB99477508A4DAC572','Editor'),
+    ('DAA6B933DAF84FBB99477508A4DAC573','User');
+
+INSERT INTO permissions (id, name)
+VALUES
+('a3cbe2f6b7cd9a34d0fa23593d0e42fa', 'view_pet'),
+('b02ac61d6f5b8d83111f42a7c75c1d2a', 'add_pet'),
+('e0b57c9a19e0412399b72391fc5d50cc', 'edit_pet'),
+('f53a2b89ffb1b3c42b9e6814e5869338', 'delete_pet'),
+('6d02a9c9378d1d86f39b3bda48da9f8e', 'view_user'),
+('6d02a9c9378d1d86f39b3bda48da9f8f', 'add_user'),
+('6d02a9c9378d1d86f39b3bda48da9f8d', 'edit_user'),
+('6d02a9c9378d1d86f39b3bda48da9f8g', 'create_user')
+
