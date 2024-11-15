@@ -1,10 +1,12 @@
--- Insert data table roles
 INSERT INTO roles (id,name)
 VALUES
     ('DAA6B933DAF84FBB99477508A4DAC571','Admin'),
     ('DAA6B933DAF84FBB99477508A4DAC572','Editor'),
-    ('DAA6B933DAF84FBB99477508A4DAC573','User');
+    ('DAA6B933DAF84FBB99477508A4DAC573','User'),
 
+
+
+-- Insert permissions with 32-character hexadecimal ID
 INSERT INTO permissions (id, name)
 VALUES
 ('a3cbe2f6b7cd9a34d0fa23593d0e42fa', 'view_pet'),
@@ -14,5 +16,37 @@ VALUES
 ('6d02a9c9378d1d86f39b3bda48da9f8e', 'view_user'),
 ('6d02a9c9378d1d86f39b3bda48da9f8f', 'add_user'),
 ('6d02a9c9378d1d86f39b3bda48da9f8d', 'edit_user'),
-('6d02a9c9378d1d86f39b3bda48da9f8g', 'create_user')
+('6d02a9c9378d1d86f39b3bda48da9f8g', 'delete_user'),
 
+
+
+INSERT INTO role_permissions (id,role_id, permission_id)
+VALUES
+-- Editer
+('1d02a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC572', 'a3cbe2f6b7cd9a34d0fa23593d0e42fa'), -- view_pet
+('2d02a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC572', 'b02ac61d6f5b8d83111f42a7c75c1d2a'), -- add_pet
+('3d02a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC572', 'e0b57c9a19e0412399b72391fc5d50cc'), -- edit_pet
+('4d02a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC572', 'f53a2b89ffb1b3c42b9e6814e5869338'), -- delete_pet
+
+('5d02a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC572', '6d02a9c9378d1d86f39b3bda48da9f8e'), -- view_user
+
+-- user
+('6d02a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC573', '6d02a9c9378d1d86f39b3bda48da9f8e'), -- view_user
+('7d02a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC573', '6d02a9c9378d1d86f39b3bda48da9f8f'), -- add_user
+('8d02a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC573', '6d02a9c9378d1d86f39b3bda48da9f8d'), -- edit_user
+
+
+-- Insert a new user into the users table. password 123456
+INSERT INTO users (id,first_name, last_name, email, phone, username, gender, password, is_admin)
+VALUES
+('9d02a9c9378d1d86f39b3bda48da9f8g','Duong', 'admin', 'admin@example.com', '0123456789', 'admin', True, '$2b$12$1hw8y1rphV0JGChNge5/Lu.YMLCdOl/CX/q9YwLfgXi4Z1.u3qJ.i', True),
+('1102a9c9378d1d86f39b3bda48da9f8g','Duong', 'editor', 'editor@example.com', '0123456789', 'editor', True, '$2b$12$1hw8y1rphV0JGChNge5/Lu.YMLCdOl/CX/q9YwLfgXi4Z1.u3qJ.i', False),
+('1002a9c9378d1d86f39b3bda48da9f8g','Duong', 'user', 'user@example.com', '0123456789', 'user', True, '$2b$12$1hw8y1rphV0JGChNge5/Lu.YMLCdOl/CX/q9YwLfgXi4Z1.u3qJ.i', False),
+
+
+
+
+INSERT INTO user_roles (id,role_id, user_id)
+VALUES
+('1002a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC573', '1002a9c9378d1d86f39b3bda48da9f8g'), -- user have permission user
+('1012a9c9378d1d86f39b3bda48da9f8g','DAA6B933DAF84FBB99477508A4DAC572', '1102a9c9378d1d86f39b3bda48da9f8g'); -- editor have per editor
