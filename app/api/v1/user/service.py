@@ -2,8 +2,9 @@ from app.api.base.oauth import encode_jwt
 from app.api.base.repository import auto_commit
 from app.api.base.schema import Authentication
 from app.api.base.service import BaseService
-from app.api.v1.user.repository import get_users, create_user, get_user_by_username
-from app.api.v1.user.schema import UserRq
+from app.api.v1.user.repository import get_users, create_user, get_user_by_username, get_roles_permissions_by_user_id, \
+    get_user_by_id
+from app.api.v1.user.schema import UserRq, ChangePasswordRq
 from app.third_parties.db.models.model import User
 from app.utils import error_messages as ms
 from app.utils.functions import verify_password, hash_password
@@ -11,6 +12,26 @@ from app.utils.constant import constant as c
 
 
 class UserService(BaseService):
+    async def me(self):
+        user_id = self.current_user.user_id
+
+        roles_permissions = self.call_repos(
+            await get_roles_permissions_by_user_id(session=self.session, user_id=user_id))
+
+        user = self.call_repos(await get_user_by_id(session=self.session, id=user_id))
+
+        return self.response(data={
+            "id": user.id,
+            "username": user.username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "phone": user.phone,
+            "is_admin": user.is_admin,
+            "roles": list({role["role_name"] for role in roles_permissions}),
+            "permissions": list({per["permission_name"] for per in roles_permissions})
+        })
+
     async def login(self, user: Authentication):
         user_db = self.call_repos(await get_user_by_username(session=self.session, username=user.username))
         if not user_db:
@@ -97,3 +118,24 @@ class UserService(BaseService):
     async def get_users(self):
         users = self.call_repos(await get_users(session=self.session))
         return self.response(data=users)
+
+    async def change_password(self, p: ChangePasswordRq):
+        user = self.call_repos(await get_user_by_username(session=self.session, username=self.current_user.username))
+        if not user:
+            return self.response_exception(
+                msg=ms.USER_IS_NOT_EXIST,
+                loc=self.change_password.__name__
+            )
+
+        if not verify_password(p.old_password, user.password):
+            return self.response_exception(
+                msg=ms.PASSWORD_INVALID,
+                loc=self.change_password.__name__
+            )
+
+        new_password = hash_password(p.new_password)
+        user.password = new_password
+
+        self.session.commit()
+
+        return self.response(data={"message": "Password updated successfully"})

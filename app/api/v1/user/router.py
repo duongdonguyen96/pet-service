@@ -10,7 +10,7 @@ from app.api.base.swagger import swagger_response
 from app.api.v1.user.examples import (
     DATA_EXAMPLE_CREATE_USER
 )
-from app.api.v1.user.schema import UserRq, UserRes
+from app.api.v1.user.schema import UserRq, UserRes, ChangePasswordRq
 from app.api.v1.user.service import UserService
 from app.utils.functions import get_current_time
 
@@ -19,19 +19,17 @@ router_auth = APIRouter()
 
 
 @router.get(
-    path="/test",
-    name="test",
-    description="Test",
+    path="/me",
+    name="get info of me",
+    description="get info of me",
     responses=swagger_response(
-        response_model=ResponseData[str],
+        response_model=ResponseData[None],
         success_status_code=status.HTTP_200_OK
     ),
 )
-def test():
-    logging.info('logging Hello World!!! OK')
-    return {
-        'message': f'Hello World!!! {get_current_time()}'
-    }
+async def view_me(current_user: UserInfo = Depends(get_current_user)):
+    user_info = await UserService(current_user).me()
+    return ResponseData(**user_info)
 
 
 @router_auth.post(
@@ -77,3 +75,19 @@ async def view_create_user(
 )
 async def view_get_all_user(current_user: UserInfo = Depends(get_current_user)):
     return await UserService(current_user).get_users()
+
+
+@router.patch(
+    path="/users/change-password",
+    name="User",
+    description="change-password",
+    responses=swagger_response(
+        response_model=ResponseData[str],
+        success_status_code=status.HTTP_200_OK,
+    ),
+)
+async def view_change_password(
+        p: ChangePasswordRq,
+        current_user: UserInfo = Depends(get_current_user)
+):
+    return await UserService(current_user).change_password(p)
